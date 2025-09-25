@@ -1,7 +1,7 @@
 # MODT Server Information Script
 
 A terminal-based script that provides real-time server information and critical service status for Linux systems. Designed to display at the top of the terminal, it helps system users monitor essential metrics and identify issues quickly.
-
+![Example Output](image.png) 
 ## Features
 
 - **Critical Service Monitoring**: Displays the status of critical services (e.g., web servers, databases) to highlight which are up or down.
@@ -61,9 +61,6 @@ Once installed, the script will automatically display system information and cri
 - **Adjust Thresholds**: Modify variables like `MAX_LOAD_THRESHOLD` and `DISK_USAGE_THRESHOLD` to set custom warning levels.
 - **Change Appearance**: Update colors and formatting to suit your preferences.
 
-## Example Output
-
-![Example Output](image.png)
 
 ## Contributing
 
