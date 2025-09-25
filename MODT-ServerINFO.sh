@@ -181,10 +181,10 @@ check_service "containerd.service" "Containerd"
 ZOMBIES=$(ps -eo stat,pid | awk '$1 ~ /^Z/ {print $2}')
 if [ -n "$ZOMBIES" ]; then
     count=$(echo "$ZOMBIES" | wc -l)
-    printf "%b\n" "${BLUE}│ ${WHITE}Zombies    : ${RED}$count process(es) detected${RESET}"
+    printf "\n%b\n" "${BLUE}│ ${WHITE}Zombies    : ${RED}$count process(es) detected${RESET}"
     printf "%b\n" "${BLUE}│ ${WHITE}Zombie PIDs: ${YELLOW}$(echo $ZOMBIES | tr '\n' ' ')${RESET}"
 else
-    printf "%b\n" "${BLUE}│ ${WHITE}Zombies    : ${GREEN}None detected${RESET}"
+    printf "\n%b\n" "${BLUE}│ ${WHITE}Zombies    : ${GREEN}None detected${RESET}"
 fi
 
 echo ""
