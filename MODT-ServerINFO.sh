@@ -22,8 +22,16 @@ printf "%b\n" "${BLUE}┌──────────────────�
 
 # Hostname
 if command -v figlet &>/dev/null; then
-    # Center the 'PROD MODE' text
-    printf "%b\n" "${BLUE}│${CYAN}                           PROD MODE               ${RESET} \n"
+    # Define a variable for the header text
+    HEADER_TEXT="PROD MODE"
+
+    # Calculate the centered position dynamically
+    HEADER_WIDTH=79  # Width of the box
+    TEXT_LENGTH=${#HEADER_TEXT}
+    PADDING=$(( (HEADER_WIDTH - TEXT_LENGTH) / 2 ))
+
+    # Print the centered header
+    printf "%b\n" "${BLUE}│${CYAN}$(printf '%*s' $PADDING '')$HEADER_TEXT$(printf '%*s' $PADDING '')${RESET}"
 else
     printf "%b\n" "${BLUE}│ ${WHITE}Hostname   : ${GREEN}$(hostname)${RESET}"
 fi
