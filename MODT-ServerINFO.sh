@@ -1,10 +1,9 @@
 #!/bin/bash
-# Ensure compatibility with bash
-
-# Replace echo -e with printf
-# Replace [[ with [
-# Add fallback logic for missing temperature data
-# Standardize output formatting
+# ── Service Status Bar ───────────────────────────────────────────────────
+# Author: Abubakkar (System Admin)
+# Professional status display for installed stack components.
+#clear
+#echo -e "${BLUE}┌───────────────────────────────────────────────────────────────────────────────┐${RESET}"
 
 # Colors
 RED='\033[1;31m'
@@ -23,7 +22,16 @@ printf "%b\n" "${BLUE}┌──────────────────�
 
 # Hostname
 if command -v figlet &>/dev/null; then
-    printf "%b\n" "${BLUE}│${CYAN} $(figlet -f slant "SCT-DEV" 2>/dev/null | sed 's/^/│ /')${RESET}"
+    # Define a variable for the header text
+    HEADER_TEXT="PROD MODE"
+
+    # Calculate the centered position dynamically
+    HEADER_WIDTH=79  # Width of the box
+    TEXT_LENGTH=${#HEADER_TEXT}
+    PADDING=$(( (HEADER_WIDTH - TEXT_LENGTH) / 2 ))
+
+    # Print the centered header
+    printf "%b\n" "${BLUE}│${CYAN}$(printf '%*s' $PADDING '')$HEADER_TEXT$(printf '%*s' $PADDING '')${RESET}"
 else
     printf "%b\n" "${BLUE}│ ${WHITE}Hostname   : ${GREEN}$(hostname)${RESET}"
 fi
@@ -63,12 +71,6 @@ printf "%b\n" "${BLUE}│ ${WHITE}IP Address : ${YELLOW}$(hostname -I | awk '{pr
 
 # Date/Time
 printf "%b\n" "${BLUE}│ ${WHITE}Date/Time  : ${GREEN}$(date +"%a, %d %b %Y %H:%M:%S %Z")${RESET}"
-
-# ── Service Status Bar ───────────────────────────────────────────────────
-# Author: Abubakkar (System Admin)
-# Professional status display for installed stack components.
-#clear
-#echo -e "${BLUE}┌───────────────────────────────────────────────────────────────────────────────┐${RESET}"
 
 #check service status
 check_service() {
@@ -187,6 +189,5 @@ else
     printf "\n%b\n" "${BLUE}│ ${WHITE}Zombies    : ${GREEN}None detected${RESET}"
 fi
 
-echo ""
   echo -e "${BLUE}└───────────────────────────────────────────────────────────────────────────────┘${RESET}"
 
