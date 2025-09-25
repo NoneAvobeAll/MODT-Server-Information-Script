@@ -63,18 +63,7 @@ Once installed, the script will automatically display system information and cri
 
 ## Example Output
 
-```
-┌───────────────────────────────────────────────────────────────────────────────┐
-│ Hostname   : server01                                                        │
-│ Uptime     : up 2 days, 4 hours                                              │
-│ Load Avg   : 1.23 0.98 0.76                                                  │
-│ CPU Temp   : 45.0°C                                                          │
-│ Memory     : 4.2Gi/8Gi                                                       │
-│ Disk (/ )  : 120G/250G used                                                  │
-│ Services   : [✔ NGINX U] [✘ MySQL D] [✔ Redis U]                             │
-│ Zombies    : 0                                                               │
-└───────────────────────────────────────────────────────────────────────────────┘
-```
+![Example Output](image.png)
 
 ## Contributing
 
