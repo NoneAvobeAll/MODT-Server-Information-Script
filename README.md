@@ -37,6 +37,7 @@ A bash script that provides comprehensive server information and status display 
 
 2. Make the script executable:
    ```bash
+   cp MODT-ServerINFO.sh.example MODT-ServerINFO.sh
    chmod +x MODT-ServerINFO.sh
    ```
 
