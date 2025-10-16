@@ -17,7 +17,7 @@ if [ -t 1 ]; then
   echo -e "${BLUE}┌───────────────────────────────────────────────────────────────────────────────┐${RESET}"
 
   if command -v figlet &>/dev/null; then
-    echo -e "${BLUE}│${CYAN} $(figlet -f slant "SCT-DEV" 2>/dev/null | sed 's/^/│ /')${RESET}"
+    echo -e "${BLUE}│${CYAN} $(figlet -f slant "Server-DEV" 2>/dev/null | sed 's/^/│ /')${RESET}"
   else
     echo -e "${BLUE}│ ${WHITE}Hostname   : ${GREEN}$(hostname)${RESET}"
   fi

@@ -1,79 +1,65 @@
 # MODT Server Information Script
 
-A bash script that provides comprehensive server information and status display for Linux systems. This script generates a Message of the Day (MOTD) with detailed system metrics and health information.
-
+A terminal-based script that provides real-time server information and critical service status for Linux systems. Designed to display at the top of the terminal, it helps system users monitor essential metrics and identify issues quickly.
+![Example Output](image.png) 
 ## Features
 
-- System Information Display
-  - Hostname and OS details
-  - Kernel version
-  - System uptime
-  - CPU information and usage
-  - Memory utilization
-  - Disk space usage
-  - Network status and information
-  - Running services status
-  - System load averages
+- **Critical Service Monitoring**: Displays the status of critical services (e.g., web servers, databases) to highlight which are up or down.
+- **Zombie Process Detection**: Identifies and lists zombie processes.
+- **System Metrics**:
+  - Hostname and IP address
+  - System uptime and load averages
+  - CPU temperature and usage
+  - Memory and disk utilization
+- **Customizable**: Easily add or remove monitored services and adjust thresholds.
 
 ## Requirements
 
 - Linux-based operating system
 - Bash shell
-- Root/sudo privileges for some system information
-- Common system utilities:
-  - `top`
-  - `free`
-  - `df`
-  - `uptime`
-  - `ifconfig`/`ip`
-  - `systemctl`
+- Utilities: `figlet`, `lm-sensors`, `bc`, `procps`, `systemctl`
 
 ## Installation
 
-1. Clone this repository:
+1. Install the necessary requirements:
+   ```bash
+   sudo apt update && sudo apt install -y figlet lm-sensors bc procps
+   ```
+
+2. Clone this repository:
    ```bash
    git clone [repository-url]
    ```
 
-2. Make the script executable:
+3. Make the script executable:
    ```bash
    cp MODT-ServerINFO.sh.example MODT-ServerINFO.sh
    chmod +x MODT-ServerINFO.sh
    ```
 
+4. Add the script to your shell configuration:
+   - For Bash users, edit `~/.bashrc`:
+     ```bash
+     echo '/path/to/MODT-ServerINFO.sh' >> ~/.bashrc
+     ```
+   - For Zsh users, edit `~/.zshrc`:
+     ```bash
+     echo '/path/to/MODT-ServerINFO.sh' >> ~/.zshrc
+     ```
+
+5. Reload your shell configuration:
+   ```bash
+   source ~/.bashrc  # or source ~/.zshrc
+   ```
+
 ## Usage
 
-Run the script with root privileges:
+Once installed, the script will automatically display system information and critical service status at the top of your terminal whenever you open a new session.
 
-```bash
-sudo ./MODT-ServerINFO.sh
-```
-
-The script will display comprehensive system information that can be used as a Message of the Day or for system monitoring purposes.
-
-## Output Example
-
-The script outputs information including but not limited to:
-- System hostname and OS version
-- Current system time and uptime
-- CPU usage and load averages
-- Memory usage statistics
-- Disk space utilization
-- Network interface information
-- Critical service status
-
-## Customization
-
-You can modify the script to:
-- Add or remove information sections
-- Adjust formatting and colors
-- Change update intervals
-- Customize threshold warnings
-- Add additional system metrics
 
 ## Contributing
 
-Feel free to fork this repository and submit pull requests for any improvements or additional features.
+Contributions are welcome! Feel free to fork this repository and submit pull requests for improvements or new features.
 
 ## License
 
@@ -81,7 +67,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Author
 
-NoneAvobeAll
+**Abubakkar Khan Fazla Rabbi**  
+*System Administrator*
 
 ## Support
 
