@@ -164,6 +164,11 @@ check_service "couchdb.service" "CouchDB"
 check_service "elasticsearch.service" "Elasticsearch"
 check_service "kibana.service" "Kibana"
 check_service "logstash.service" "Logstash"
+check_service "influxdb.service" "InfluxDB"
+check_service "prometheus.service" "Prometheus"
+check_service "grafana-server.service" "Grafana"
+check_service "neo4j.service" "Neo4j"
+check_service "redis.service" "Redis"
 
 # Web servers
 check_service "nginx.service" "NGINX"
@@ -195,9 +200,12 @@ check_service "ntpd.service" "NTPD"
 
 # Caching
 check_service "redis-server.service" "Redis"
+check_service "memcached.service" "Memcached"
+check_service "varnish.service" "Varnish"
 
 # Supervisor
 check_service "supervisor.service" "Supervisor"
+check_service "supervisord.service" "Supervisord"
 
 # Kubernetes
 check_service "kubelet.service" "Kubelet"
@@ -206,6 +214,7 @@ check_service "kube-apiserver.service" "Kube API Server"
 check_service "kube-controller-manager.service" "Kube Controller Manager"
 check_service "kube-scheduler.service" "Kube Scheduler"
 check_service "kube-dns.service" "Kube DNS"
+check_service "etcd.service" "etcd"
 
 # Containers
 check_service "docker.service" "Docker"
@@ -213,6 +222,11 @@ check_service "podman.service" "Podman"
 check_service "lxc.service" "LXC"
 check_service "lxd.service" "LXD"
 check_service "containerd.service" "Containerd"
+check_service "crio.service" "CRI-O"
+check_service "runc.service" "runc" 
+check_service "k3s.service" "k3s"
+check_service "microk8s.service" "MicroK8s"
+check_service "minikube.service" "Minikube"
 
 echo ""
   echo -e "${BLUE}└───────────────────────────────────────────────────────────────────────────────┘${RESET}"
