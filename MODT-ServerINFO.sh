@@ -1,4 +1,109 @@
+<<<<<<< HEAD:MODT-ServerINFO.sh
 #!/bin/bash
+=======
+#Install these:
+# sudo apt install -y figlet lm-sensors bc procps
+# Optional: sudo sensors-detect --auto #nonvm
+# ── Production Server MOTD (Abubakkar - SysOps) ───────────────────────────
+# Requirements: figlet, lm-sensors, procps, bc
+
+if [ -t 1 ]; then
+  RED='\033[1;31m'
+  GREEN='\033[1;32m'
+  YELLOW='\033[1;33m'
+  BLUE='\033[1;34m'
+  CYAN='\033[1;36m'
+  WHITE='\033[1;37m'
+  RESET='\033[0m'
+
+  clear
+  echo -e "${BLUE}┌───────────────────────────────────────────────────────────────────────────────┐${RESET}"
+
+  if command -v figlet &>/dev/null; then
+    echo -e "${BLUE}│${CYAN} $(figlet -f slant "Server-DEV" 2>/dev/null | sed 's/^/│ /')${RESET}"
+  else
+    echo -e "${BLUE}│ ${WHITE}Hostname   : ${GREEN}$(hostname)${RESET}"
+  fi
+  echo -e "${BLUE}├───────────────────────────────────────────────────────────────────────────────┤${RESET}"
+
+  echo -e "${BLUE}│ ${WHITE}Last Login : ${YELLOW}$(last -n 1 -R -F | head -n 1)${RESET}"
+  echo -e "${BLUE}│ ${WHITE}Uptime     : ${GREEN}$(uptime -p)${RESET}"
+
+  # Load average alert
+  LOAD1=$(cut -d ' ' -f1 /proc/loadavg)
+  if (( $(echo "$LOAD1 > 2.0" | bc -l) )); then
+    echo -e "${BLUE}│ ${WHITE}Load Avg   : ${RED}$(cut -d ' ' -f1-3 /proc/loadavg)${RESET}"
+  else
+    echo -e "${BLUE}│ ${WHITE}Load Avg   : ${YELLOW}$(cut -d ' ' -f1-3 /proc/loadavg)${RESET}"
+  fi
+
+  # CPU temperature
+  TEMP=$(sensors 2>/dev/null | awk '/^Package id 0:|^Tdie:|^Tctl:/ {print $2; exit}')
+  if [[ -z "$TEMP" && -f /sys/class/thermal/thermal_zone0/temp ]]; then
+    TEMP_RAW=$(cat /sys/class/thermal/thermal_zone0/temp)
+    TEMP=$(awk "BEGIN {printf \"%.1f°C\", $TEMP_RAW/1000}")
+  fi
+
+  if [[ -z "$TEMP" ]]; then
+    echo -e "${BLUE}│ ${WHITE}CPU Temp   : ${RED}Not available${RESET}"
+  else
+    echo -e "${BLUE}│ ${WHITE}CPU Temp   : ${GREEN}$TEMP${RESET}"
+  fi
+
+  echo -e "${BLUE}│ ${WHITE}Memory     : ${GREEN}$(free -h | awk '/Mem:/ {print $3 "/" $2}')${RESET}"
+  echo -e "${BLUE}│ ${WHITE}Disk (/ )  : ${GREEN}$(df -h / | awk 'NR==2 {print $3 "/" $2 " used"}')${RESET}"
+  echo -e "${BLUE}│ ${WHITE}Shell      : ${CYAN}$SHELL${RESET}"
+  echo -e "${BLUE}│ ${WHITE}IP Address : ${YELLOW}$(hostname -I | awk '{print $1}')${RESET}"
+
+  # MariaDB version check (handles both 'mariadb' & deprecated 'mysql')
+  if command -v mariadb &>/dev/null; then
+    DB_BIN="mariadb"
+  elif command -v mysql &>/dev/null; then
+    DB_BIN="mysql"
+  else
+    DB_BIN=""
+  fi
+
+  if [ -n "$DB_BIN" ]; then
+    # Grab only the first version match to avoid line breaks
+    DB_VER=$($DB_BIN --version 2>/dev/null \
+      | grep -oE '([0-9]+\.)+[0-9]+(-MariaDB)?' \
+      | head -n1)
+    echo -e "${BLUE}│ ${WHITE}MariaDB    : ${GREEN}${DB_BIN} v$DB_VER${RESET}"
+  else
+    echo -e "${BLUE}│ ${WHITE}MariaDB    : ${RED}Not installed${RESET}"
+  fi
+
+  # Zombie process detection and listing PIDs
+  ZOMBIES=$(ps -eo stat,pid | awk '$1 ~ /^Z/ {print $2}')
+  if [[ -n "$ZOMBIES" ]]; then
+    count=$(echo "$ZOMBIES" | wc -l)
+    echo -e "${BLUE}│ ${WHITE}Zombies    : ${RED}$count process(es) – Investigate!${RESET}"
+    echo -e "${BLUE}│ ${WHITE}Zombie PIDs: ${YELLOW}$(echo $ZOMBIES | tr '\n' ' ')${RESET}"
+  else
+    echo -e "${BLUE}│ ${WHITE}Zombies    : ${GREEN}None detected${RESET}"
+    
+  fi
+
+  # Tmux/screen session awareness
+# Terminal session awareness (tmux, screen, SSH, TTY)
+if [ -n "$TMUX" ]; then
+    echo -e "${BLUE}│ ${WHITE}Terminal   : ${CYAN}tmux session${RESET}"
+elif [ -n "$STY" ]; then
+    echo -e "${BLUE}│ ${WHITE}Terminal   : ${CYAN}screen session${RESET}"
+elif [ -n "$SSH_CONNECTION" ]; then
+    echo -e "${BLUE}│ ${WHITE}Terminal   : ${CYAN}SSH session${RESET}"
+elif [ -n "$XDG_SESSION_TYPE" ]; then
+    echo -e "${BLUE}│ ${WHITE}Terminal   : ${CYAN}$XDG_SESSION_TYPE session${RESET}"
+else
+    tty_type=$(tty 2>/dev/null)
+    echo -e "${BLUE}│ ${WHITE}Terminal   : ${CYAN}${tty_type:-Unknown}${RESET}"
+fi
+  # Date/time
+  echo -e "${BLUE}│ ${WHITE}Date/Time  : ${GREEN}$(date +"%a, %d %b %Y %H:%M:%S %Z")${RESET}"
+
+
+>>>>>>> development:MODT-ServerINFO.sh.example
 # ── Service Status Bar ───────────────────────────────────────────────────
 # Author: Abubakkar (System Admin)
 # Professional status display for installed stack components.
