@@ -33,7 +33,6 @@ A terminal-based script that provides real-time server information and critical 
 
 3. Make the script executable:
    ```bash
-   cp MODT-ServerINFO.sh.example MODT-ServerINFO.sh
    chmod +x MODT-ServerINFO.sh
    ```
 
@@ -56,6 +55,15 @@ A terminal-based script that provides real-time server information and critical 
 
 Once installed, the script will automatically display system information and critical service status at the top of your terminal whenever you open a new session.
 
+<<<<<<< HEAD
+## Customization
+
+- **Add/Remove Services**: Edit the `IMPORTANT_SERVICES` array in the script to include the services you want to monitor.
+- **Adjust Thresholds**: Modify variables like `MAX_LOAD_THRESHOLD` and `DISK_USAGE_THRESHOLD` to set custom warning levels.
+- **Change Appearance**: Update colors and formatting to suit your preferences.
+
+=======
+>>>>>>> development
 
 ## Contributing
 

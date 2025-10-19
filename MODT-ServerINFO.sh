@@ -1,3 +1,6 @@
+<<<<<<< HEAD:MODT-ServerINFO.sh
+#!/bin/bash
+=======
 #Install these:
 # sudo apt install -y figlet lm-sensors bc procps
 # Optional: sudo sensors-detect --auto #nonvm
@@ -100,11 +103,79 @@ fi
   echo -e "${BLUE}│ ${WHITE}Date/Time  : ${GREEN}$(date +"%a, %d %b %Y %H:%M:%S %Z")${RESET}"
 
 
+>>>>>>> development:MODT-ServerINFO.sh.example
 # ── Service Status Bar ───────────────────────────────────────────────────
 # Author: Abubakkar (System Admin)
 # Professional status display for installed stack components.
 #clear
 #echo -e "${BLUE}┌───────────────────────────────────────────────────────────────────────────────┐${RESET}"
+
+# Colors
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[1;34m'
+CYAN='\033[1;36m'
+WHITE='\033[1;37m'
+RESET='\033[0m'
+
+# Clear screen
+clear
+
+# Header
+printf "%b\n" "${BLUE}┌───────────────────────────────────────────────────────────────────────────────┐${RESET}"
+
+# Hostname
+if command -v figlet &>/dev/null; then
+    # Define a variable for the header text
+    HEADER_TEXT="PROD MODE"
+
+    # Calculate the centered position dynamically
+    HEADER_WIDTH=79  # Width of the box
+    TEXT_LENGTH=${#HEADER_TEXT}
+    PADDING=$(( (HEADER_WIDTH - TEXT_LENGTH) / 2 ))
+
+    # Print the centered header
+    printf "%b\n" "${BLUE}│${CYAN}$(printf '%*s' $PADDING '')$HEADER_TEXT$(printf '%*s' $PADDING '')${RESET}"
+else
+    printf "%b\n" "${BLUE}│ ${WHITE}Hostname   : ${GREEN}$(hostname)${RESET}"
+fi
+
+# Load Average
+LOAD1=$(cut -d ' ' -f1 /proc/loadavg)
+if [ $(echo "$LOAD1 > 2.0" | bc -l) -eq 1 ]; then
+    printf "%b\n" "${BLUE}│ ${WHITE}Load Avg   : ${RED}$(cut -d ' ' -f1-3 /proc/loadavg)${RESET}"
+else
+    printf "%b\n" "${BLUE}│ ${WHITE}Load Avg   : ${YELLOW}$(cut -d ' ' -f1-3 /proc/loadavg)${RESET}"
+fi
+
+# CPU Temperature
+TEMP=$(sensors 2>/dev/null | awk '/^Package id 0:|^Tdie:|^Tctl:/ {print $2; exit}')
+if [ -z "$TEMP" ] && [ -f /sys/class/thermal/thermal_zone0/temp ]; then
+    TEMP_RAW=$(cat /sys/class/thermal/thermal_zone0/temp)
+    TEMP=$(awk "BEGIN {printf \"%.1f°C\", $TEMP_RAW/1000}")
+fi
+
+if [ -z "$TEMP" ]; then
+    printf "%b\n" "${BLUE}│ ${WHITE}CPU Temp   : ${RED}Not available${RESET}"
+else
+    printf "%b\n" "${BLUE}│ ${WHITE}CPU Temp   : ${GREEN}$TEMP${RESET}"
+fi
+
+# Memory
+printf "%b\n" "${BLUE}│ ${WHITE}Memory     : ${GREEN}$(free -h | awk '/Mem:/ {print $3 "/" $2}')${RESET}"
+
+# Disk Usage
+printf "%b\n" "${BLUE}│ ${WHITE}Disk (/ )  : ${GREEN}$(df -h / | awk 'NR==2 {print $3 "/" $2 " used"}')${RESET}"
+
+# Shell
+printf "%b\n" "${BLUE}│ ${WHITE}Shell      : ${CYAN}$SHELL${RESET}"
+
+# IP Address
+printf "%b\n" "${BLUE}│ ${WHITE}IP Address : ${YELLOW}$(hostname -I | awk '{print $1}')${RESET}"
+
+# Date/Time
+printf "%b\n" "${BLUE}│ ${WHITE}Date/Time  : ${GREEN}$(date +"%a, %d %b %Y %H:%M:%S %Z")${RESET}"
 
 #check service status
 check_service() {
@@ -164,19 +235,13 @@ check_service "couchdb.service" "CouchDB"
 check_service "elasticsearch.service" "Elasticsearch"
 check_service "kibana.service" "Kibana"
 check_service "logstash.service" "Logstash"
-check_service "influxdb.service" "InfluxDB"
-check_service "prometheus.service" "Prometheus"
-check_service "grafana-server.service" "Grafana"
-check_service "neo4j.service" "Neo4j"
-check_service "redis.service" "Redis"
 
 # Web servers
 check_service "nginx.service" "NGINX"
 check_service "apache2.service" "Apache2"
 check_service "lighttpd.service" "Lighttpd"
 check_service "caddy.service" "Caddy"
-check_service "httpd.service" "HTTPD"
-check_service "haproxy.service" "HAProxy"
+check_service "httpd.service" "HAProxy"
 check_service "traefik.service" "Traefik"
 check_service "openresty.service" "OpenResty"
 check_service "tomcat.service" "Tomcat"
@@ -200,12 +265,9 @@ check_service "ntpd.service" "NTPD"
 
 # Caching
 check_service "redis-server.service" "Redis"
-check_service "memcached.service" "Memcached"
-check_service "varnish.service" "Varnish"
 
 # Supervisor
 check_service "supervisor.service" "Supervisor"
-check_service "supervisord.service" "Supervisord"
 
 # Kubernetes
 check_service "kubelet.service" "Kubelet"
@@ -214,7 +276,6 @@ check_service "kube-apiserver.service" "Kube API Server"
 check_service "kube-controller-manager.service" "Kube Controller Manager"
 check_service "kube-scheduler.service" "Kube Scheduler"
 check_service "kube-dns.service" "Kube DNS"
-check_service "etcd.service" "etcd"
 
 # Containers
 check_service "docker.service" "Docker"
@@ -222,13 +283,16 @@ check_service "podman.service" "Podman"
 check_service "lxc.service" "LXC"
 check_service "lxd.service" "LXD"
 check_service "containerd.service" "Containerd"
-check_service "crio.service" "CRI-O"
-check_service "runc.service" "runc" 
-check_service "k3s.service" "k3s"
-check_service "microk8s.service" "MicroK8s"
-check_service "minikube.service" "Minikube"
 
-echo ""
-  echo -e "${BLUE}└───────────────────────────────────────────────────────────────────────────────┘${RESET}"
+# Zombie Processes
+ZOMBIES=$(ps -eo stat,pid | awk '$1 ~ /^Z/ {print $2}')
+if [ -n "$ZOMBIES" ]; then
+    count=$(echo "$ZOMBIES" | wc -l)
+    printf "\n%b\n" "${BLUE}│ ${WHITE}Zombies    : ${RED}$count process(es) detected${RESET}"
+    printf "%b\n" "${BLUE}│ ${WHITE}Zombie PIDs: ${YELLOW}$(echo $ZOMBIES | tr '\n' ' ')${RESET}"
+else
+    printf "\n%b\n" "${BLUE}│ ${WHITE}Zombies    : ${GREEN}None detected${RESET}"
 fi
+
+  echo -e "${BLUE}└───────────────────────────────────────────────────────────────────────────────┘${RESET}"
 
