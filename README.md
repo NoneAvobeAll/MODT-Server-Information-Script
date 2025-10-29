@@ -1,6 +1,7 @@
 # MODT Server Information Script
 
 A terminal-based script that provides real-time server information and critical service status for Linux systems. Designed to display at the top of the terminal, it helps system users monitor essential metrics and identify issues quickly.
+
 ![Example Output](image.png) 
 ## Features
 
